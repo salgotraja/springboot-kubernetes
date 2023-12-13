@@ -1,7 +1,7 @@
-package js.bookmark.api.api;
+package js.bookmark.api;
 
-import js.bookmark.api.domain.Bookmark;
-import js.bookmark.api.domain.BookmarkRepository;
+import js.bookmark.domain.Bookmark;
+import js.bookmark.domain.BookmarkRepository;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;

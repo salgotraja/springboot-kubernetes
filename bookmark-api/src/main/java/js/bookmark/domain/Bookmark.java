@@ -1,4 +1,4 @@
-package js.bookmark.api.domain;
+package js.bookmark.domain;
 
 import jakarta.persistence.*;
 import lombok.*;

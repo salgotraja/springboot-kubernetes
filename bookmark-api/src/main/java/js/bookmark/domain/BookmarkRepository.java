@@ -9,14 +9,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 
-    @Query("SELECT new js.bookmark.domain.BookmarkDto(b.id, b.title, b.url, b.createdAt) FROM Bookmark b")
-    Page<BookmarkDto> findBookmarks(Pageable pageable);
+    @Query("SELECT new js.bookmark.domain.BookmarkDTO(b.id, b.title, b.url, b.createdAt) FROM Bookmark b")
+    Page<BookmarkDTO> findBookmarks(Pageable pageable);
 
     @Query("""
-    SELECT new js.bookmark.domain.BookmarkDto(b.id, b.title, b.url, b.createdAt) FROM Bookmark b
+    SELECT new js.bookmark.domain.BookmarkDTO(b.id, b.title, b.url, b.createdAt) FROM Bookmark b
     WHERE lower(b.title) like lower(concat('%', :query, '%'))
     """)
-    Page<BookmarkDto> searchBookmarks(String query, Pageable pageable);
-    Page<BookmarkDto> findByTitleContainsIgnoreCase(String query, Pageable pageable);
+    Page<BookmarkDTO> searchBookmarks(String query, Pageable pageable);
+    Page<BookmarkDTO> findByTitleContainsIgnoreCase(String query, Pageable pageable);
     //Page<BookmarkVM> findByTitleContainsIgnoreCase(String query, Pageable pageable);
 }

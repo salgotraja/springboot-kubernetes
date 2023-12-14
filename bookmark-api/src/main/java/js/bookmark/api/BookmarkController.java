@@ -1,12 +1,13 @@
 package js.bookmark.api;
 
+import jakarta.validation.Valid;
+import js.bookmark.domain.BookmarkDTO;
 import js.bookmark.domain.BookmarksDTO;
 import js.bookmark.domain.BookmarkService;
+import js.bookmark.domain.CreateBookmarkRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/bookmarks")
@@ -21,5 +22,11 @@ public class BookmarkController {
             return bookmarkService.getBookmarks(page);
         }
         return bookmarkService.searchBookmarks(query, page);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public BookmarkDTO createBookmark(@RequestBody @Valid CreateBookmarkRequest request) {
+        return bookmarkService.createBookmark(request);
     }
 }

@@ -1,0 +1,20 @@
+# Stage 1: Build the application with Gradle
+FROM gradle:8.5-jdk21 AS builder
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle clean build --no-daemon -x test
+
+# Stage 2: Extract the layers from the built JAR
+FROM openjdk:21-jdk as extractor
+WORKDIR application
+COPY --from=builder /home/gradle/src/build/libs/bookmark-api-0.0.1-SNAPSHOT.jar application.jar
+RUN java -Djarmode=layertools -jar application.jar extract
+
+# Stage 3: Create the Docker image with layers
+FROM openjdk:21-jdk
+WORKDIR application
+COPY --from=extractor application/dependencies/ ./
+COPY --from=extractor application/spring-boot-loader/ ./
+COPY --from=extractor application/snapshot-dependencies/ ./
+COPY --from=extractor application/application/ ./
+ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]

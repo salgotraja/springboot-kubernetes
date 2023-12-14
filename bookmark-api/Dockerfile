@@ -1,7 +1,10 @@
-FROM openjdk:21-jdk
-ARG JAR_FILE=target/*.jar
+FROM gradle:8.5-jdk21 AS builder
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle clean build --no-daemon -x test
 
-ADD ${JAR_FILE} app.jar
-RUN sh -c 'touch /app.jar'
+# Stage 2: Run the application
+FROM openjdk:21-jdk
+COPY --from=builder /home/gradle/src/build/libs/*.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["sh","-c", "java","-jar","/app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]

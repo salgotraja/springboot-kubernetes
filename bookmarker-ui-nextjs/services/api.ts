@@ -7,8 +7,12 @@ const API_BASE_URL = "http://localhost:8080"
 
 console.log(getApiUrl())*/
 
-export const fetchBookmarks = async (page: number): Promise<BookmarksResponse> => {
-    const response = await fetch(`${API_BASE_URL}/api/bookmarks?page=${page}`, {
+export const fetchBookmarks = async (page: number, query: string): Promise<BookmarksResponse> => {
+    let url = `${API_BASE_URL}/api/bookmarks?page=${page}`
+    if (query) {
+        url += `&query=${query}`
+    }
+    const response = await fetch(url,{
         method: 'GET',
         headers: {
             'Cache-Control': 'no-cache',
@@ -34,7 +38,8 @@ export const saveBookmark = async (bookmark: { title: string; url: string; }) =>
 
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.message || 'Network response was not ok');
+            const DEFAULT_ERROR_MSG = 'Network response was not ok';
+            throw new Error(errorData.message || DEFAULT_ERROR_MSG);
         }
 
         const data = await response.json()

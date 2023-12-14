@@ -4,11 +4,12 @@ import Pagination from "@/components/Pagination";
 
 interface BookmarkProps {
     bookmarks: BookmarksResponse
+    query?: string
 }
-const Bookmarks = ({ bookmarks }: BookmarkProps) => {
+const Bookmarks = ({ bookmarks, query }: BookmarkProps) => {
     return (
         <div>
-            <Pagination bookmarks={bookmarks}/>
+            <Pagination bookmarks={bookmarks} query={query}/>
             {bookmarks.data.map((bookmark) => (
                 <Bookmark key={bookmark.id} bookmark={bookmark}/>
             ))}

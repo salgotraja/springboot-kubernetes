@@ -3,7 +3,7 @@ services:
   bookmarker-api:
     build:
       context: bookmark-api
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.layered
     environment:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
@@ -15,4 +15,17 @@ services:
     restart: always
     depends_on:
       - bookmarker-db
+
+  bookmarker-ui-nextjs:
+    container_name: bookmarker-ui-nextjs
+    build:
+      context: bookmarker-ui-nextjs
+      dockerfile: Dockerfile
+    environment:
+      SERVER_SIDE_API_BASE_URL: http://bookmarker-api:8080
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:18080
+    ports:
+      - "13000:3000"
+
+    command: /bin/sh -c "env && npm start"
 

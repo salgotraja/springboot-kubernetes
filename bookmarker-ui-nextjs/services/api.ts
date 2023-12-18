@@ -1,14 +1,10 @@
 import {BookmarksResponse} from "@/services/models";
-const API_BASE_URL = "http://localhost:8080"
 
-/*const getApiUrl = () => {
-    return serverRuntimeConfig.API_BASE_URL || publicRuntimeConfig.API_BASE_URL;
-}
-
-console.log(getApiUrl())*/
-
+console.log("process.env.NEXT_PUBLIC_API_BASE_URL: ", process.env.NEXT_PUBLIC_API_BASE_URL)
 export const fetchBookmarks = async (page: number, query: string): Promise<BookmarksResponse> => {
-    let url = `${API_BASE_URL}/api/bookmarks?page=${page}`
+    const apiUrl = process.env.SERVER_SIDE_API_BASE_URL;
+    console.log("API Url fetchBookmarks: ", apiUrl)
+    let url = `${apiUrl}/api/bookmarks?page=${page}`
     if (query) {
         url += `&query=${query}`
     }
@@ -26,9 +22,10 @@ export const fetchBookmarks = async (page: number, query: string): Promise<Bookm
 }
 
 export const saveBookmark = async (bookmark: { title: string; url: string; }) => {
-
+    const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    console.log("public api url: ", apiUrl)
     try {
-        const response = await fetch(`${API_BASE_URL}/api/bookmarks`, {
+        const response = await fetch(`${apiUrl}/api/bookmarks`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

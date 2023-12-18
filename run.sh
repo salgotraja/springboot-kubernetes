@@ -32,6 +32,22 @@ function stop() {
     echo "Stopping all docker containers...."
     docker-compose -f ${dc_infra} -f ${dc_app} stop
     docker-compose -f ${dc_infra} -f ${dc_app} rm -f
+
+    echo "Cleaning up Docker objects..."
+
+    # Remove dangling images (unused and untagged images)
+    docker image prune -f
+
+    # Remove stopped containers
+    docker container prune -f
+
+    # Remove unused networks
+    docker network prune -f
+
+    # Remove unused volumes
+    docker volume prune -f
+
+    echo "Cleanup complete."
 }
 
 function restart() {

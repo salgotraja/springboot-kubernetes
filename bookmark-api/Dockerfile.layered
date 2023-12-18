@@ -1,20 +1,16 @@
 # Stage 1: Build the application with Gradle
-FROM gradle:8.5-jdk21 AS builder
-COPY --chown=gradle:gradle . /home/gradle/src
-WORKDIR /home/gradle/src
-RUN gradle clean build --no-daemon -x test
+FROM gradle:8.5-jdk21-alpine AS build
+WORKDIR /workspace/app
 
-# Stage 2: Extract the layers from the built JAR
-FROM openjdk:21-jdk as extractor
-WORKDIR application
-COPY --from=builder /home/gradle/src/build/libs/bookmark-api-0.0.1-SNAPSHOT.jar application.jar
-RUN java -Djarmode=layertools -jar application.jar extract
+COPY . /workspace/app
+RUN --mount=type=cache,target=/root/.gradle ./gradlew clean build -x test
+RUN mkdir -p build/dependency && (cd build/dependency; jar -xf ../libs/*-SNAPSHOT.jar)
 
-# Stage 3: Create the Docker image with layers
+# Stage 2: Extract the layers from the built JAR and Copy
 FROM openjdk:21-jdk
-WORKDIR application
-COPY --from=extractor application/dependencies/ ./
-COPY --from=extractor application/spring-boot-loader/ ./
-COPY --from=extractor application/snapshot-dependencies/ ./
-COPY --from=extractor application/application/ ./
-ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
+VOLUME /tmp
+ARG DEPENDENCY=/workspace/app/build/dependency
+COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
+COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
+COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
+ENTRYPOINT ["java","-cp","app:app/lib/*","js.bookmark.BookmarkApiApplication"]

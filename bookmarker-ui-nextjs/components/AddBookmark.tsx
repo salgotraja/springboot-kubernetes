@@ -8,7 +8,6 @@ interface MessageInfo {
 }
 
 export const AddBookmark = () => {
-
     const [title, setTitle] = useState("");
     const [url, setUrl] = useState("");
     const [messageInfo, setMessageInfo] = useState<MessageInfo>({ message: null, isSuccess: true });

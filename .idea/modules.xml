@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/bookmark-api.iml" filepath="$PROJECT_DIR$/.idea/modules/bookmark-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/bookmark-api.main.iml" filepath="$PROJECT_DIR$/.idea/modules/bookmark-api.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/springboot-kubernetes.iml" filepath="$PROJECT_DIR$/.idea/springboot-kubernetes.iml" />
     </modules>
   </component>

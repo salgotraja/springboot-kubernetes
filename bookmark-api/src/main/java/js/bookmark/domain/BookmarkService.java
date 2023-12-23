@@ -17,21 +17,22 @@ public class BookmarkService {
     private final BookmarkRepository bookmarkRepository;
     private final BookmarkMapper bookmarkMapper;
 
+    private Pageable getPageable(Integer page) {
+        int pageNo = page < 1 ? 0 : page - 1;
+        return PageRequest.of(pageNo, 10, Sort.Direction.DESC, "createdAt");
+    }
+
     @Transactional(readOnly = true)
     public BookmarksDTO getBookmarks(Integer page) {
-        int pageNo = page < 1 ? 0 : page - 1;
-        Pageable pageable = PageRequest.of(pageNo, 10, Sort.Direction.DESC, "createdAt");
-        Page<BookmarkDTO> bookmarkPage = bookmarkRepository.findBookmarks(pageable);
+        Page<BookmarkDTO> bookmarkPage = bookmarkRepository.findBookmarks(getPageable(page));
         return new BookmarksDTO(bookmarkPage);
     }
 
     @Transactional(readOnly = true)
     public BookmarksDTO searchBookmarks(String query, Integer page) {
-        int pageNo = page < 1 ? 0 : page - 1;
-        Pageable pageable = PageRequest.of(pageNo, 10, Sort.Direction.DESC, "createdAt");
         //Page<BookmarkDto> bookmarkPage = bookmarkRepository.searchBookmarks(query, pageable);
         //Page<BookmarkVM> bookmarkVMPage = bookmarkRepository.findByTitleContainsIgnoreCase(query, pageable);
-        Page<BookmarkDTO> bookmarkPage = bookmarkRepository.findByTitleContainsIgnoreCase(query, pageable);
+        Page<BookmarkDTO> bookmarkPage = bookmarkRepository.findByTitleContainsIgnoreCase(query, getPageable(page));
         return new BookmarksDTO(bookmarkPage);
     }
 

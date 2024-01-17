@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(properties = {
         "spring.datasource.url=jdbc:tc:postgresql:16.1-alpine:///demo"
 })
-class BookmarkControllerTest {
+class BookmarkControllerIntegrationTest {
 
     @Autowired
     private MockMvc mvc;

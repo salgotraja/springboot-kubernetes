@@ -2,7 +2,7 @@ package js.bookmark.api;
 
 import js.bookmark.domain.Bookmark;
 import js.bookmark.domain.BookmarkRepository;
-import js.bookmark.infra.BookmarkApiTestConfig;
+import js.bookmark.infra.TestContainerConfiguration;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @AutoConfigureMockMvc
-@Import(BookmarkApiTestConfig.class)
+@Import(TestContainerConfiguration.class)
 public class BookmarkControllerITConfigTest {
 
     @Autowired

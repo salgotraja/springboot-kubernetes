@@ -8,7 +8,6 @@ import java.time.Instant;
 @Entity
 @Table(name = "bookmark")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Bookmark {

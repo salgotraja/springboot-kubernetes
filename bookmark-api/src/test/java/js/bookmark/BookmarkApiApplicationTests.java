@@ -9,5 +9,4 @@ class BookmarkApiApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }

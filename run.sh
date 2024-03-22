@@ -4,7 +4,7 @@ declare dc_infra=docker-compose.yml
 declare dc_app=docker-compose-app.yml
 
 function build_api() {
-    cd bookmark-api
+    cd bookmark-api || exit
     ./gradlew clean build -x test
     cd ..
 }
@@ -63,4 +63,4 @@ then
     action=$@
 fi
 
-eval ${action}
+eval "${action}"
